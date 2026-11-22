@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gedz Ventures LLC</title>
+<meta name="description" content="Gedz Ventures LLC is an Alaska-based company that builds and operates small businesses. Contact us about partnerships, supply and new projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Layout idea: a field-map page. Topographic contour lines behind a tall condensed wordmark,
+     then plain left-aligned sections with a coordinate-style index down the margin. */
+  :root {
+    --spruce: #13241f;      /* primary ink */
+    --snow: #f1f4f2;        /* page background */
+    --ice: #dfe9e8;         /* panels */
+    --flare: #d4612a;       /* single accent: bush-plane orange */
+    --stone: #56665f;       /* secondary text */
+    --rule: #c3d0cc;        /* hairlines */
+    --contour: rgba(19, 36, 31, 0.13);
+    --font-display: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", sans-serif;
+    --font-body: "Public Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --spruce: #e6eeeb;
+      --snow: #0f1a17;
+      --ice: #172723;
+      --flare: #ee7a44;
+      --stone: #9fb1aa;
+      --rule: #2a3d37;
+      --contour: rgba(214, 232, 226, 0.10);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --spruce: #e6eeeb;
+    --snow: #0f1a17;
+    --ice: #172723;
+    --flare: #ee7a44;
+    --stone: #9fb1aa;
+    --rule: #2a3d37;
+    --contour: rgba(214, 232, 226, 0.10);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--snow);
+    color: var(--spruce);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--flare);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* Top bar */
+  header.bar {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 20px 0; border-bottom: 1px solid var(--rule);
+    font-size: 14px; letter-spacing: 0.02em;
+  }
+  .mark { display: flex; align-items: center; gap: 10px; font-weight: 600; text-decoration: none; }
+  .mark svg { width: 26px; height: 26px; }
+  nav { display: flex; gap: 22px; flex-wrap: wrap; }
+  nav a { text-decoration: none; color: var(--stone); }
+  nav a:hover { color: var(--spruce); }
+
+  /* Hero */
+  .hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--rule); }
+  #topo { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .hero-inner { position: relative; padding: 72px 0 64px; display: grid; gap: 28px; }
+  .eyebrow {
+    font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--flare);
+  }
+  h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(64px, 14vw, 168px);
+    line-height: 0.86;
+    letter-spacing: 0.005em;
+    text-wrap: balance;
+  }
+  h1 .llc { color: var(--flare); font-weight: 600; font-size: 0.32em; letter-spacing: 0.12em; vertical-align: top; margin-left: 0.15em; }
+  .lede { max-width: 34em; font-size: 20px; line-height: 1.5; margin: 0; }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px; border-radius: 3px; font: inherit; font-weight: 600; font-size: 15px;
+    text-decoration: none; cursor: pointer; border: 1.5px solid var(--spruce);
+    background: var(--spruce); color: var(--snow);
+  }
+  .btn.ghost { background: transparent; color: var(--spruce); }
+  .btn:hover { background: var(--flare); border-color: var(--flare); color: #fff; }
+
+  /* Sections */
+  section.block { display: grid; grid-template-columns: 180px 1fr; gap: 32px; padding: 64px 0; border-bottom: 1px solid var(--rule); }
+  .index { font-family: var(--font-display); font-weight: 600; font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone); padding-top: 8px; }
+  .index b { display: block; font-size: 44px; line-height: 1; color: var(--spruce); letter-spacing: 0; margin-bottom: 6px; }
+  h2 {
+    margin: 0 0 16px; font-family: var(--font-display); font-weight: 800; text-transform: uppercase;
+    font-size: clamp(34px, 5vw, 52px); line-height: 0.95; text-wrap: balance;
+  }
+  p { margin: 0 0 14px; max-width: 62ch; }
+  .muted { color: var(--stone); }
+
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 28px; border-top: 2px solid var(--spruce); }
+  .grid3 article { padding: 20px 22px 22px 0; }
+  .grid3 article + article { padding-left: 22px; border-left: 1px solid var(--rule); }
+  .grid3 h3 { margin: 0 0 8px; font-size: 17px; font-weight: 600; }
+  .grid3 p { font-size: 15.5px; color: var(--stone); margin: 0; }
+  .grid3 .tag { font-family: var(--font-display); font-weight: 600; letter-spacing: 0.1em; font-size: 13px; color: var(--flare); text-transform: uppercase; display: block; margin-bottom: 6px; }
+
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0; margin-top: 24px; border: 1px solid var(--rule); background: var(--ice); }
+  .facts div { padding: 16px 18px; border-right: 1px solid var(--rule); }
+  .facts div:last-child { border-right: 0; }
+  .facts dt { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone); font-weight: 600; }
+  .facts dd { margin: 4px 0 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .who { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 24px; }
+  .who div { border-left: 3px solid var(--flare); padding: 2px 0 2px 16px; }
+  .who h3 { margin: 0 0 6px; font-size: 16px; font-weight: 600; }
+  .who p { margin: 0; font-size: 15.5px; color: var(--stone); }
+
+  /* Contact */
+  .contact-card { margin-top: 26px; background: var(--ice); border: 1px solid var(--rule); display: grid; grid-template-columns: 1fr 1fr; }
+  .contact-card > div { padding: 24px; }
+  .contact-card > div + div { border-left: 1px solid var(--rule); }
+  .label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone); font-weight: 600; margin-bottom: 6px; }
+  .value { font-family: var(--font-display); font-weight: 600; font-size: clamp(22px, 3.2vw, 30px); line-height: 1.15; word-break: break-word; }
+  .value a { text-decoration: none; }
+  .value a:hover { color: var(--flare); }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .small-btn { font: inherit; font-size: 14px; font-weight: 600; padding: 8px 14px; border-radius: 3px; border: 1.5px solid var(--spruce); background: transparent; color: var(--spruce); cursor: pointer; text-decoration: none; }
+  .small-btn:hover { border-color: var(--flare); color: var(--flare); }
+  .note { font-size: 14px; color: var(--stone); margin-top: 18px; }
+  #copied { font-size: 14px; color: var(--flare); min-height: 1.4em; margin-top: 8px; }
+
+  footer { padding: 28px 0 48px; font-size: 14px; color: var(--stone); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+  @media (max-width: 760px) {
+    section.block { grid-template-columns: 1fr; gap: 12px; padding: 48px 0; }
+    .index b { font-size: 32px; display: inline; margin-right: 10px; }
+    .grid3 { grid-template-columns: 1fr; }
+    .grid3 article, .grid3 article + article { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
+    .contact-card { grid-template-columns: 1fr; }
+    .contact-card > div + div { border-left: 0; border-top: 1px solid var(--rule); }
+    nav { gap: 14px; }
+    .hero-inner { padding: 52px 0 44px; }
+  }
+  @media (max-width: 420px) {
+    .wrap { padding: 0 16px; }
+    nav a:nth-child(2) { display: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="bar">
+      <a class="mark" href="#top" aria-label="Gedz Ventures LLC, top of page">
+        <svg viewBox="0 0 26 26" aria-hidden="true"><path d="M2 22 L10 8 L14 14 L17 10 L24 22 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="19.5" cy="5" r="2" fill="#d4612a"/></svg>
+        Gedz Ventures LLC
+      </a>
+      <nav aria-label="Sections">
+        <a href="#about">About</a>
+        <a href="#work">What we do</a>
+        <a href="#partners">Work with us</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+  </div>
+
+  <section class="hero" id="top">
+    <canvas id="topo" aria-hidden="true"></canvas>
+    <div class="wrap hero-inner">
+      <span class="eyebrow">Alaska-based · Est. 2026</span>
+      <h1>Gedz<br>Ventures<span class="llc">LLC</span></h1>
+      <p class="lede">We build and run small businesses, starting with retail and e-commerce. We work with brands, suppliers and partners who value reliable, straightforward business.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#contact">Get in touch</a>
+        <a class="btn ghost" href="#partners">Work with us</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="block" id="about">
+      <div class="index"><b>01</b>About</div>
+      <div>
+        <h2>A small company built to grow</h2>
+        <p>Gedz Ventures LLC is a registered limited liability company in Alaska. It's the home for the businesses we start and operate. Our first line of business is retail: sourcing genuine, brand-name products from manufacturers and authorized distributors and selling them to customers online.</p>
+        <p class="muted">We keep things simple: buy from legitimate sources, follow each brand's pricing and policies, pay on time, and communicate clearly.</p>
+        <dl class="facts">
+          <div><dt>Legal name</dt><dd>Gedz Ventures LLC</dd></div>
+          <div><dt>Entity</dt><dd>Limited liability company</dd></div>
+          <div><dt>Based in</dt><dd>Alaska, USA</dd></div>
+          <div><dt>Founded</dt><dd>2026</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="block" id="work">
+      <div class="index"><b>02</b>What we do</div>
+      <div>
+        <h2>Current and future work</h2>
+        <p>Retail is where we started. The company is set up to take on other ventures as they make sense.</p>
+        <div class="grid3">
+          <article>
+            <span class="tag">Active</span>
+            <h3>Retail &amp; e-commerce</h3>
+            <p>We buy brand-name products wholesale and sell them online through major marketplaces, with professional prep and fulfillment.</p>
+          </article>
+          <article>
+            <span class="tag">Active</span>
+            <h3>Sourcing &amp; supply</h3>
+            <p>We build direct relationships with manufacturers and authorized distributors across home, outdoor, craft, pet, tools and more.</p>
+          </article>
+          <article>
+            <span class="tag">Open</span>
+            <h3>New ventures</h3>
+            <p>We're open to partnerships, projects and new lines of business. If you have an idea that fits, reach out.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="partners">
+      <div class="index"><b>03</b>Work with us</div>
+      <div>
+        <h2>For brands, suppliers and partners</h2>
+        <p>Here's what you can expect if you work with us.</p>
+        <div class="who">
+          <div><h3>Brands &amp; manufacturers</h3><p>Opening orders sized for a new account, steady reorders, and full respect for your MAP and brand guidelines.</p></div>
+          <div><h3>Distributors</h3><p>A registered business with an EIN, clear purchase orders, and prompt payment.</p></div>
+          <div><h3>Partners &amp; other inquiries</h3><p>Collaborations, services and new business ideas. Send us a short note about what you have in mind.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="contact">
+      <div class="index"><b>04</b>Contact</div>
+      <div>
+        <h2>Get in touch</h2>
+        <p>Email is the fastest way to reach us. We usually reply within one to two business days.</p>
+        <div class="contact-card">
+          <div>
+            <div class="label">Email</div>
+            <div class="value"><a href="mailto:elisha@gedzco.com" id="email">elisha@gedzco.com</a></div>
+            <div class="row">
+              <button class="small-btn" type="button" id="copy-email">Copy email</button>
+            </div>
+            <div id="copied" aria-live="polite"></div>
+          </div>
+          <div>
+            <div class="label">Phone</div>
+            <div class="value"><a href="tel:+19072142505">(907) 214-2505</a></div>
+            <div class="label" style="margin-top:18px">Contact</div>
+            <div>Elisha Gedz, Owner</div>
+          </div>
+        </div>
+        <p class="note">For wholesale or account setup, please include your company name and the products or lines you'd like to discuss.</p>
+      </div>
+    </section>
+
+    <footer>
+      <span>© 2026 Gedz Ventures LLC · Alaska, USA</span>
+      <span>All business conducted under Gedz Ventures LLC</span>
+    </footer>
+  </div>
+
+<script>
+  // Copy email button
+  (function () {
+    var btn = document.getElementById('copy-email');
+    var out = document.getElementById('copied');
+    btn.addEventListener('click', function () {
+      var text = 'elisha@gedzco.com';
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          out.textContent = 'Email copied.';
+        }).catch(function () {
+          out.textContent = 'Copy didn’t work here. Select the address above to copy it.';
+        });
+      } else {
+        out.textContent = 'Select the address above to copy it.';
+      }
+    });
+  })();
+
+  // Topographic contour lines behind the hero (decorative)
+  (function () {
+    var c = document.getElementById('topo');
+    var ctx = c.getContext('2d');
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var t0 = performance.now();
+
+    function field(x, y) {
+      return Math.sin(x * 0.0042 + 1.3) * Math.cos(y * 0.006 - 0.4) * 1.1
+           + Math.sin((x + y) * 0.0027 + 2.1) * 0.8
+           + Math.cos(x * 0.0091 - y * 0.0033) * 0.35
+           + (y * 0.0012);
+    }
+
+    function draw(progress) {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var w = c.clientWidth, h = c.clientHeight;
+      if (c.width !== Math.round(w * dpr) || c.height !== Math.round(h * dpr)) {
+        c.width = Math.round(w * dpr); c.height = Math.round(h * dpr);
+      }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+      var styles = getComputedStyle(document.documentElement);
+      var line = styles.getPropertyValue('--contour').trim() || 'rgba(0,0,0,0.12)';
+      var accent = styles.getPropertyValue('--flare').trim() || '#d4612a';
+      var step = 6;
+      var levels = 14;
+      var cols = Math.ceil(w / step) + 1, rows = Math.ceil(h / step) + 1;
+      var vals = new Float32Array(cols * rows);
+      for (var j = 0; j < rows; j++) for (var i = 0; i < cols; i++) vals[j * cols + i] = field(i * step, j * step);
+      var limit = Math.max(1, Math.round(levels * progress));
+      for (var L = 0; L < limit; L++) {
+        var lvl = -2 + L * (4.4 / levels);
+        ctx.beginPath();
+        ctx.strokeStyle = (L === 9) ? accent : line;
+        ctx.lineWidth = (L === 9) ? 1.4 : 1;
+        ctx.globalAlpha = (L === 9) ? 0.55 : 1;
+        for (var y = 0; y < rows - 1; y++) {
+          for (var x = 0; x < cols - 1; x++) {
+            var a = vals[y * cols + x], b = vals[y * cols + x + 1], d = vals[(y + 1) * cols + x], e = vals[(y + 1) * cols + x + 1];
+            var pts = [];
+            if ((a < lvl) !== (b < lvl)) pts.push([x + (lvl - a) / (b - a), y]);
+            if ((b < lvl) !== (e < lvl)) pts.push([x + 1, y + (lvl - b) / (e - b)]);
+            if ((d < lvl) !== (e < lvl)) pts.push([x + (lvl - d) / (e - d), y + 1]);
+            if ((a < lvl) !== (d < lvl)) pts.push([x, y + (lvl - a) / (d - a)]);
+            if (pts.length >= 2) {
+              ctx.moveTo(pts[0][0] * step, pts[0][1] * step);
+              ctx.lineTo(pts[1][0] * step, pts[1][1] * step);
+              if (pts.length === 4) {
+                ctx.moveTo(pts[2][0] * step, pts[2][1] * step);
+                ctx.lineTo(pts[3][0] * step, pts[3][1] * step);
+              }
+            }
+          }
+        }
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    function frame(now) {
+      var p = Math.min(1, (now - t0) / 1400);
+      draw(0.35 + 0.65 * p);
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    if (reduce) draw(1); else { draw(0.35); requestAnimationFrame(frame); }
+    var rt;
+    window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { draw(1); }, 120); });
+    if (window.matchMedia) {
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
+      if (mq.addEventListener) mq.addEventListener('change', function () { draw(1); });
+    }
+    new MutationObserver(function () { draw(1); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  })();
+</script>
+</body>
+</html>
